@@ -13,6 +13,7 @@ class Hangman {
     var answer: String?
     var knownString: String?
     var guessedLetters: NSMutableArray?
+    var incorrectGuesses: NSMutableArray?
     
     // Initialize HangmanPhrase with all possible phrases of Hangman game
     init() {
@@ -33,6 +34,7 @@ class Hangman {
             }
         }
         guessedLetters = NSMutableArray()
+        incorrectGuesses = NSMutableArray()
     }
     
     // Guess a letter, adding that letter to guessedLetters, and checking that letter against
@@ -52,6 +54,11 @@ class Hangman {
                             + "\((knownString! as NSString).substringFromIndex(i+1))"
             }
         }
+        
+        if !isCorrect {
+            incorrectGuesses!.addObject(letter)
+        }
+        
         return isCorrect
     }
     
@@ -60,11 +67,18 @@ class Hangman {
         if guessedLetters!.count == 0 {
             return ""
         }
-        var result: String!
+        var result = ""
         for (var i = 0; i < guessedLetters!.count; i += 1) {
-            result = result + ", \(guessedLetters?.objectAtIndex(i))"
+            result = result + ", " + ((guessedLetters?.objectAtIndex(i))! as! String)
         }
         return result
+    }
+    
+    func incorrect() -> String {
+        if incorrectGuesses!.count == 0 {
+            return ""
+        }
+        return (incorrectGuesses?.componentsJoinedByString(", "))!
     }
 
 }
